@@ -45,18 +45,19 @@ int main(void)
 {
     /* Initialize MIDI Message builder */
     MIDIMsgBuilder_init(&midiMsgBuilder);
+    int dummy;
     
     /* Initialize the MIDI router */
     MIDI_Router_Standard_init(&midiRouter);
-    MIDI_Router_addCB(&midiRouter.router, MIDIMSG_NOTE_ON, 1, MIDI_note_on_do, NULL); 
-    MIDI_Router_addCB(&midiRouter.router, MIDIMSG_NOTE_OFF, 1, MIDI_note_off_do, NULL); 
+    MIDI_Router_addCB(&midiRouter.router, MIDIMSG_NOTE_ON, 1, MIDI_note_on_do, &dummy); 
+    MIDI_Router_addCB(&midiRouter.router, MIDIMSG_NOTE_OFF, 1, MIDI_note_off_do, &dummy); 
 
     /* Enable LEDs so we can toggle them */
 
     LEDs_Init();
     
     /* Set up midi */
-    MIDI_low_level_setup();
+    MIDI_low_level_setup_nolib();
 
     while (1) {
         MIDI_process_buffer();
@@ -78,6 +79,8 @@ void MIDI_process_byte(char byte)
         case MIDIMsgBuilder_State_COMPLETE:
             do_stuff_with_msg(midiMsgBuilder.msg);
             MIDIMsgBuilder_init(&midiMsgBuilder); /* reset builder */
+            break;
+        default:
             break;
     }
     lastState = midiMsgBuilder.state;

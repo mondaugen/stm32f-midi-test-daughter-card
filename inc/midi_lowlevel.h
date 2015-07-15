@@ -3,7 +3,7 @@
 
 #include "stm32f4xx.h" 
 
-#define MIDI_DMA_STRUCT DMA1_Stream0 
+#define MIDI_DMA_STRUCT DMA1_Stream5 
 
 /* This should be automated according to current clock speed and dividers, keep
  * it simple for now */
@@ -27,6 +27,7 @@ void MIDI_process_byte(char byte);
 void MIDI_process_buffer(void);
 
 void MIDI_low_level_setup(void); 
+void MIDI_low_level_setup_nolib(void);
 
 
 #endif /* MIDI_LOWLEVEL_H */
